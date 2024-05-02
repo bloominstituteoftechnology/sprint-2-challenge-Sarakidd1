@@ -5,34 +5,195 @@
   <title>Web Sprint 2 Challenge</title>
   <script id="challenge">
     // 👉 CHALLENGE 1
+    
     function profileActivation(profile, reason) {
-
+    // Check if the profile is active
+    if (profile.active) {
+        
+        if (!reason) {
+            return "confirm status manually";
+        } else {
+            
+            profile.active = false;
+            profile.reason = reason;
+        }
+    } else {
+       
+        profile.active = true;
+        delete profile.reason;
     }
+    
+    return profile;
+}
+
+// just examples of 
+let testProfile1 = {
+    active: false,
+    reason: "Not logged in for 30 days"
+};
+
+let testProfile2 = {
+    active: true,
+    reason: undefined
+};
+
+let testProfile3 = {
+    active: true,
+    reason: "Account suspended"
+};
+
+console.log(profileActivation(testProfile1)); // Output: { active: true }
+console.log(profileActivation(testProfile2, "Not logged in for 30 days")); // Output: { active: false, reason: "Not logged in for 30 days" }
+console.log(profileActivation(testProfile3)); // Output: "confirm status manually"
+
+
+
 
     // 👉 CHALLENGE 2
-    function mineSweeper(grid, x, y) {
-
+    
+    function mineSweeper(gameGrid, x, y) {
+    
+    if (x < 1 || x > 3 || y < 1 || y > 3) {
+        return "invalid coordinates";
     }
+    
+    
+    let content = gameGrid[y - 1][x - 1];
+    
+    
+    if (content === "🟥") {
+        return "🟥 💀";
+    } else if (content === "🟦") {
+        return "🟦 🥳";
+    }
+}
+
+// --> Test examples
+let gameGrid = [
+    ["🟥", "🟦", "🟥"],
+    ["🟦", "🟥", "🟥"],
+    ["🟥", "🟦", "🟦"]
+];
+
+console.log(mineSweeper(gameGrid, 1, 1)); // Output: 🟥 💀
+
 
     // 👉 CHALLENGE 3
-    function booleanize(obj) {
 
+    function booleanize(obj) {
+   
+    for (let prop in obj) {
+        
+        if (prop.length > 9) {
+            return "shorten all prop names to 9 chars or less";
+        }
+        
+        
+        if (obj[prop] === 0) {
+            obj[prop] = false;
+        } else if (obj[prop] === 1) {
+            obj[prop] = true;
+        } else if (obj[prop] === null) {
+            delete obj[prop];
+        }
     }
+    
+    return obj;
+}
+
+// examples
+let obj1 = {
+    keyZero: 0,
+    keyOne: 1,
+    keyNull: null,
+    keyTwo: 2
+};
+
+let obj2 = {
+    veryLongPropertyName: 0,
+    keyOne: 1
+};
+
+console.log(booleanize(obj1));
+console.log(booleanize(obj2));
+
 
     // 👉 CHALLENGE 4
+    
+    
     function scrub(text, forbidden) {
-
+   
+    if (text.length === 0 || forbidden.length === 0) {
+        return text;
     }
+    
+    // Split the text into words
+    let words = text.split(" ");
+    
+    // Iterate through each word
+    for (let i = 0; i < words.length; i++) {
+        // Check if the current word is in the forbidden array
+        if (forbidden.includes(words[i])) {
+            // Replace the word with "x" characters of equal length
+            words[i] = "x".repeat(words[i].length);
+        }
+    }
+    
+    
+    let result = words.join(" ");
+    
+    return result;
+}
+
+//---> Test examples <--- 
+console.log(scrub("out of the silent planet", ["of", "silent"])); // Output: "out xx the xxxxxx planet"
+console.log(scrub("the ghost of the navigator", ["the"])); // Output: "xxx ghost of xxx navigator"
+console.log(scrub("lost somewhere in time", [])); // Output: "lost somewhere in time"
+console.log(scrub("aces high", ["high", "aces", "hearts"])); // Output: "xxxx xxxx"
+console.log(scrub("", ["high", "aces"])); // Output: ""
+
 
     // 👉 CHALLENGE 5 (bonus, NOT graded)
+   
     function normalizePhoneNumber(num) {
+    
+    let formattedNumber = "(" + num.substring(0, 3) + ") " + num.substring(3, 6) + "-" + num.substring(6);
+    return formattedNumber;
+}
 
-    }
+// Test examples
+console.log(normalizePhoneNumber("9876543210")); // Output: "(987) 654-3210"
+console.log(normalizePhoneNumber("1111111111")); // Output: "(111) 111-1111"
+
 
     // 👉 CHALLENGE 6 (bonus, NOT graded)
+  
     function diceRolls() {
-
+    let throws = 0; // Total number of rolls
+    let counter = 0; // Consecutive number of sixes
+    
+    while (true) {
+        throws++; 
+        let roll = Math.floor(Math.random() * 6) + 1; 
+        // Check if the roll is a six
+        if (roll === 6) {
+            counter++; 
+            
+            // Check if three consecutive sixes have been rolled
+            if (counter === 3) {
+                break; 
+            }
+        } else {
+            counter = 0; 
+        }
     }
+    
+    return throws; 
+}
+
+// --->Test example <---
+let result = diceRolls();
+console.log(result);
 
     // 🧪 DO NOT make any changes below this line ===================
     globalThis.challengeVersion = 1
